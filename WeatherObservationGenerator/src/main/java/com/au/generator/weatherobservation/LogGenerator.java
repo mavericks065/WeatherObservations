@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
@@ -34,7 +35,7 @@ public class LogGenerator {
 
             for (int i = 1; i <= rowNumber; i++) {
                 final Log log = generateLog(Instant.now());
-                data = log.toString().getBytes();
+                data = log.toString().getBytes(Charset.defaultCharset());
                 out.write(data);
             }
 
