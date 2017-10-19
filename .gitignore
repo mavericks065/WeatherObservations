@@ -1,3 +1,6 @@
 WeatherObservationGenerator/.idea
 WeatherObservationGenerator/target/*
 WeatherObservationGenerator/*.iml
+WeatherObservations/project/target/*
+WeatherObservations/project/project/*
+WeatherObservations/target/*
