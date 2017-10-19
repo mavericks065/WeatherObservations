@@ -27,16 +27,17 @@ public class LogGenerator {
     private static final double MIN_TEMP = -22.0;
     private static final double MAX_TEMP = 50.0;
 
+    private static final String HEADER = "timestamp|location|temperature|observatory\n";
+
     private static final List<String> observatories = Lists.newArrayList("AU", "FR", "BE", "US", "CA", "NZ");
 
     public void generateWeatherObservations(final int rowNumber, final Path logFile) throws IOException {
-        byte[] data;
         try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(logFile, CREATE, APPEND))) {
-
+            writeData(HEADER, out);
+            Log log;
             for (int i = 1; i <= rowNumber; i++) {
-                final Log log = generateLog(Instant.now());
-                data = log.toString().getBytes(Charset.defaultCharset());
-                out.write(data);
+                log = generateLog(Instant.now());
+                writeData(log.toString(), out);
             }
 
         } catch (IOException e) {
@@ -45,14 +46,24 @@ public class LogGenerator {
         }
     }
 
+    private void writeData(final String str, final OutputStream out) throws IOException {
+        out.write(str.getBytes(Charset.defaultCharset()));
+    }
+
     private Log generateLog(final Instant instant) {
         final double latitude = randomCoordinateLatitude();
         double longitude = randomCoordinateLongitude();
         String observatory = getRandomObservatory();
 
-        double temp = observatory.equals("US") ? randomFarheneit() : randomDegree();
+        double temp = generateTemperature(observatory);
 
         return new Log(instant, longitude, latitude, temp, observatory);
+    }
+
+    private double generateTemperature(String observatory) {
+        if (observatory.equals("US")) return randomFarheneit();
+        else if (observatory.equals("AU")) return randomDegree();
+        else return randomKelvin();
     }
 
     private double randomDegree() {
@@ -63,6 +74,11 @@ public class LogGenerator {
     private double randomFarheneit() {
         double degreCelcius = randomDegree();
         return 1.8 * degreCelcius + 32;
+    }
+
+    private double randomKelvin() {
+        double degreCelcius = randomDegree();
+        return degreCelcius + 273.15;
     }
 
     private String getRandomObservatory() {

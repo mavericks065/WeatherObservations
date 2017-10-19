@@ -48,7 +48,7 @@ public class LogGeneratorTest {
         final int actualResult = getNumberOfRows(OUTPUTFILE);
 
         // THEN
-        Assert.assertEquals(rows, actualResult);
+        Assert.assertEquals(rows + 1, actualResult);
     }
 
     private int getNumberOfRows(String fileName) throws IOException {

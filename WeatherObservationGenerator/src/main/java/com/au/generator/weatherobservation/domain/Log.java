@@ -28,7 +28,7 @@ public class Log {
 
         final StringBuffer sb = new StringBuffer(formatTimeStamp());
 
-        sb.append("|").append(decimalFormatter.format(longitude)).append(",").append(decimalFormatter.format(latitude));
+        sb.append("|").append(decimalFormatter.format(longitude)).append(";").append(decimalFormatter.format(latitude));
         sb.append("|").append(decimalFormatter.format(temperature));
         sb.append("|").append(observatory);
         sb.append("\n");
